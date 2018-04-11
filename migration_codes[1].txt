@@ -1,0 +1,15 @@
+First time migration:
+
+Enable-Migrations -ContextTypeName DemoWebApplication.Models.DemoWebAppDBContext
+
+
+Add New Migration:
+
+Add-Migration Migrate_ver011
+
+
+
+Update Migration:
+
+update-database
+
