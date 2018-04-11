@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "All Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="PrdListCntrl">
+    <!-- breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+                <li><a href="/Home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+                <li class="active">{{products[0].CategoryName}}</li>
+                <li class="active" ng-show="subCategoryTitleShow">{{products[0].SubCategoryName}}</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<!-- //breadcrumbs -->
+<!--- products --->
+<div class="products">
+    <div class="container">
+        <div class="col-md-4 products-left" ng-controller="MenuCntrl">
+            <div class="categories">
+                <h2>Categories</h2>
+                <ul class="cate">
+                    <li ng-repeat="c in categorywiseSubCategories">
+                        <a href="/Product/All/Category/{{c.ID}}"><i class="fa fa-arrow-right" aria-hidden="true"></i>{{c.Title}}</a>
+                        <ul ng-show="c.SubCategories.length>0">
+                            <li ng-repeat="sc in c.SubCategories">
+                                <a href="/Product/All/SubCategory/{{sc.ID}}"><i class="fa fa-arrow-right" aria-hidden="true"></i>{{sc.Title}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8 products-right" ng-controller="PrdListCntrl">
+            <div class="products-right-grid">
+                <div class="products-right-grids">
+                    <div class="sorting">
+                        <select id="country"
+                                ng-model="selectedPrdSortOrder"
+                                ng-options="sort.ID as sort.Title for sort in prdSortOrders"
+                                ng-required="true"
+                                ng-change="ddSortingChanged()"
+                                class="frm-field required sect">
+                        </select>
+                    </div>
+                    <div class="sorting-left">
+                        <select id="country1"
+                                ng-model="selectedPrdPageSize"
+                                ng-options="page.ID as page.Title for page in prdPageSizes"
+                                ng-required="true"
+                                ng-change="ddPagesizeChanged()"
+                                class="frm-field required sect">
+                        </select>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <div class="agile_top_brands_grids">
+                <div class="col-md-4 top_brand_left" dir-paginate="product in products|itemsPerPage:pageSize" total-items="totalItems">
+                    <div class="hover14 column">
+                        <div class="agile_top_brand_left_grid">
+                            <div class="agile_top_brand_left_grid_pos" ng-if="product.IsOfferable">
+                                <img src="/Content/images/offer.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="agile_top_brand_left_grid1">
+                                <figure>
+                                    <div class="snipcart-item block">
+                                        <div class="snipcart-thumb">
+                                            <a href="/Product/Details/{{product.ID}}">
+                                                <img title="{{product.Title}}" alt="{{product.Title}}" ng-src="{{product.ImagePath}}" width="150px" height="150px">
+                                            </a>
+                                            <p>{{product.Title}}</p>
+                                            <div class="stars">
+                                                <i class="fa fa-star {{product.Rating>=1?'blue-star':'gray-star'}}" aria-hidden="true"></i>
+                                                <i class="fa fa-star {{product.Rating>=2?'blue-star':'gray-star'}}" aria-hidden="true"></i>
+                                                <i class="fa fa-star {{product.Rating>=3?'blue-star':'gray-star'}}" aria-hidden="true"></i>
+                                                <i class="fa fa-star {{product.Rating>=4?'blue-star':'gray-star'}}" aria-hidden="true"></i>
+                                                <i class="fa fa-star {{product.Rating>=5?'blue-star':'gray-star'}}" aria-hidden="true"></i>
+                                            </div>
+                                            <h4 ng-if="product.IsOfferable">&#8377; {{product.OfferPrice}} <span>&#8377; {{product.OriginalPrice}}</span></h4>
+                                            <h4 ng-if="!product.IsOfferable">&#8377; {{product.OriginalPrice}} </h4>
+                                        </div>
+                                        @*<div class="snipcart-details top_brand_home_details">
+                                    <form action="#" method="post">
+                                        <fieldset>
+                                            <input type="hidden" name="cmd" value="_cart">
+                                            <input type="hidden" name="add" value="1">
+                                            <input type="hidden" name="business" value=" ">
+                                            <input type="hidden" name="item_name" value="Fortune Sunflower Oil">
+                                            <input type="hidden" name="amount" value="35.99">
+                                            <input type="hidden" name="discount_amount" value="1.00">
+                                            <input type="hidden" name="currency_code" value="USD">
+                                            <input type="hidden" name="return" value=" ">
+                                            <input type="hidden" name="cancel_return" value=" ">
+                                            <input type="submit" name="submit" value="Add to cart" class="button">
+                                        </fieldset>
+                                    </form>
+                                </div>*@
+                                    </div>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix" ng-if="!(($index + 1) % 3)"></div>
+                    <div class="agile_top_brands_grids" ng-if="!(($index + 1) % 3)"></div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            
+            @*<nav class="numbering">
+                <ul class="pagination paging">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1<span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>*@
+            <dir-pagination-controls max-size="8"
+                                     direction-links="true"
+                                     boundary-links="true"
+                                     on-page-change="GetAllProductByType(newPageNumber)">
+            </dir-pagination-controls>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<!--- products --->
+
+
+
+@section Scripts
+{
+
+    <script src="~/ScriptsNg/Controllers/PrdListCntrl.js"></script>
+
+}

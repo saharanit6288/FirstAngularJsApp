@@ -1,0 +1,242 @@
+﻿
+@{
+    ViewBag.Title = "Category : Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="page-content" ng-app="myapp" ng-controller="CategoryCntrl">
+
+    <div class="page-header">
+        <h1>
+            @ViewBag.Title
+
+        </h1>
+    </div><!-- /.page-header -->
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3 class="text-success">{{TxtMsg}}</h3>
+            <ul>
+                <li class="text-danger" style="" data-ng-repeat="error in errors">{{error[0].ErrorMessage}}</li>
+            </ul>
+            <!-- PAGE CONTENT BEGINS -->
+            <form class="form-horizontal" role="form" novalidate name="frmCat">
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Title </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="idTitle" placeholder="Title" class="col-xs-10 col-sm-5" name="nameTitle" ng-model="category.Title" required />
+                    </div>
+                </div>
+                <div class="form-group" ng-show="errorMsg && frmCat.nameTitle.$error.required">
+                    <label class="col-sm-3 control-label no-padding-right visible-lg visible-md visible-sm">&nbsp;</label>
+
+                    <div class="col-sm-9">
+                        <span style="color:red">
+                            Title is required
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Sequence </label>
+
+                    <div class="col-sm-9">
+                        <input type="number" id="idSequence" placeholder="Sequence" class="col-xs-10 col-sm-5" name="nameSequence" ng-model="category.Sequence" />
+                    </div>
+                </div>
+                <div class="form-group" ng-show="frmCat.nameSequence.$error.number">
+                    <label class="col-sm-3 control-label no-padding-right visible-lg visible-md visible-sm">&nbsp;</label>
+
+                    <div class="col-sm-9">
+                        <span style="color:red">
+                            Not valid number!
+                        </span>
+                    </div>
+                </div>
+                <input type="hidden" name="nameCatID" ng-model="category.ID" />
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button class="btn btn-info" type="button" ng-click="SaveUpdate()">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            {{btnText}}
+                        </button>
+
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="hr hr-24"></div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="clearfix">
+                        <div class="pull-right tableTools-container">
+                            <div class="dt-buttons btn-overlap btn-group">
+                                <a class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-search bigger-110 blue"></i> <span class="hidden">Show/hide columns</span></span></a><a class="dt-button buttons-copy buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-copy bigger-110 pink"></i> <span class="hidden">Copy to clipboard</span></span></a><a class="dt-button buttons-csv buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-database bigger-110 orange"></i> <span class="hidden">Export to CSV</span></span></a>
+                                <a class="dt-button buttons-excel buttons-flash btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table">
+                                    <span><i class="fa fa-file-excel-o bigger-110 green"></i> <span class="hidden">Export to Excel</span></span>
+                                    <div style="position: absolute; left: 0px; top: 0px; width: 39px; height: 35px; z-index: 99;" data-original-title="" title="">
+                                        <embed id="ZeroClipboard_TableToolsMovie_1" src="assets/swf/flashExport.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboard_TableToolsMovie_1" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=39&amp;height=35" wmode="transparent" width="39" align="middle" height="35">
+                                    </div>
+                                </a>
+                                <a class="dt-button buttons-pdf buttons-flash btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table">
+                                    <span><i class="fa fa-file-pdf-o bigger-110 red"></i> <span class="hidden">Export to PDF</span></span>
+                                    <div style="position: absolute; left: 0px; top: 0px; width: 39px; height: 35px; z-index: 99;" data-original-title="" title="">
+                                        <embed id="ZeroClipboard_TableToolsMovie_2" src="assets/swf/flashExport.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboard_TableToolsMovie_2" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=2&amp;width=39&amp;height=35" wmode="transparent" width="39" align="middle" height="35">
+                                    </div>
+                                </a>
+                                <a class="dt-button buttons-print btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-print bigger-110 grey"></i> <span class="hidden">Print</span></span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-header">
+                        Results for "@ViewBag.Title"
+                    </div>
+                    <!-- div.table-responsive -->
+                    <!-- div.dataTables_borderWrap -->
+                    <div>
+                        <div id="dynamic-table_wrapper" class="dataTables_wrapper form-inline no-footer">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="dataTables_length" id="dynamic-table_length">
+                                        <label>
+                                            Display
+                                            <select data-ng-options="o for o in pageSizes" data-ng-model="selectedPageSize" ng-change="dropDownChanged()" class="form-control input-sm"></select>
+                                            records
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div id="dynamic-table_filter" class="dataTables_filter">
+                                        <label>Search:<input class="form-control input-sm" placeholder="" aria-controls="dynamic-table" type="search" ng-model="searchTerm" ng-change="SearchItem()"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="dynamic-table" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="dynamic-table_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>
+                                            <label class="pos-rel">
+                                                <input type="checkbox" class="ace" ng-model="checkedAll" ng-change="toggleCheckAll()"/>
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </th>
+                                        <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                                            <a href="javascript:void(0);" ng-click="deleteSelectedData(selectedIds)" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete Selected">
+                                                <span class="red">
+                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                </span>
+                                            </a>
+                                        </th>
+                                        <th class="sorting_disabled" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending">Title</th>
+                                        <th class="hidden-480 sorting_disabled" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Sequence</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr role="row" @*ng-repeat="category in categories" *@ 
+                                        dir-paginate="category in categories|itemsPerPage:pageSize" total-items="totalItems"
+                                        ng-class="$even ? 'odd' : 'even'">
+                                        <td>
+                                            <label class="pos-rel">
+                                                <input type="checkbox" class="ace" value="{{category.ID}}" ng-model="category.checked" ng-change="cbChecked(category)"/>
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <div class="hidden-sm hidden-xs action-buttons">
+                                                <a class="green" href="javascript:void(0);" ng-click="GetCategoryByID(category.ID)">
+                                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                                </a>
+                                                <a class="red" href="javascript:void(0);" ng-click="DeleteCategory(category.ID)">
+                                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                </a>
+                                            </div>
+                                            <div class="hidden-md hidden-lg">
+                                                <div class="inline pos-rel">
+                                                    <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                                                        <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                        <li>
+                                                            <a href="javascript:void(0);" ng-click="GetCategoryByID(category.ID)" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
+                                                                <span class="green">
+                                                                    <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);" ng-click="DeleteCategory(category.ID)" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
+                                                                <span class="red">
+                                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{category.Title}}</td>
+                                        <td class="hidden-480">{{category.Sequence}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
+                                        Total {{totalItems}} record(s) found
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    @*<div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
+                                        <ul class="pagination">
+                                            <li class="paginate_button previous disabled" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_previous"><a href="#">Previous</a></li>
+                                            <li class="paginate_button active" aria-controls="dynamic-table" tabindex="0"><a href="#">1</a></li>
+                                            <li class="paginate_button " aria-controls="dynamic-table" tabindex="0"><a href="#">2</a></li>
+                                            <li class="paginate_button " aria-controls="dynamic-table" tabindex="0"><a href="#">3</a></li>
+                                            <li class="paginate_button next" aria-controls="dynamic-table" tabindex="0" id="dynamic-table_next"><a href="#">Next</a></li>
+                                        </ul>
+                                    </div>*@
+                                    <dir-pagination-controls max-size="8"
+                                                            direction-links="true"
+                                                            boundary-links="true"
+                                                            on-page-change="GetCategories(newPageNumber)">
+                                    </dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div>
+
+@section Scripts
+{
+
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/Scripts/ui-bootstrap-tpls.min.js"></script>
+<script src="~/ScriptsNg/Directives/dirPagination.js"></script>
+<script src="~/ScriptsNg/Directives/angucomplete-alt.js"></script>
+<script src="~/ScriptsNg/Module/app.js"></script>
+<script src="~/ScriptsNg/Services/BasePathFactory.js"></script>
+<script src="~/ScriptsNg/Controllers/CategoryCntrl.js"></script>
+<script src="~/ScriptsNg/Services/CRUDService.js"></script>
+
+}
+
+
+
